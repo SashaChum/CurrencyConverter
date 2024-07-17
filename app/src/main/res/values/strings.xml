@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CurrencyConverter</string>
+    <string name="retry_text">Something went wrong… Retry.</string>
 </resources>
