@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/mainScreenFragment">
+
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.chumikov.currencyconverter.MainScreenFragment"
+        android:label="MainScreenFragment" >
+        <action
+            android:id="@+id/action_mainScreenFragment_to_calculationScreenFragment"
+            app:destination="@id/calculationScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calculationScreenFragment"
+        android:name="com.chumikov.currencyconverter.CalculationScreenFragment"
+        android:label="fragment_calculation_screen"
+        tools:layout="@layout/fragment_calculation_screen" >
+        <argument
+            android:name="fromCurrency"
+            app:argType="string" />
+        <argument
+            android:name="toCurrency"
+            app:argType="string" />
+    </fragment>
+</navigation>
