@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.search.spinner)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

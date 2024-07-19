@@ -55,6 +55,7 @@ class MainScreenFragment : Fragment() {
         val currencies = viewModel.mainScreenState.value.currencyList
         val leftSpinner = binding.spinnerLeft
         val rightSpinner = binding.spinnerRight
+        val searchSpinner = binding.searchSpinner
 
         val adapter = ArrayAdapter(
             requireContext(),
@@ -63,6 +64,7 @@ class MainScreenFragment : Fragment() {
         )
         leftSpinner.adapter = adapter
         rightSpinner.adapter = adapter
+        searchSpinner.adapter = adapter
 
         leftSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
