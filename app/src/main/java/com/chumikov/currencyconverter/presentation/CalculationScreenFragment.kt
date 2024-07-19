@@ -1,16 +1,12 @@
-package com.chumikov.currencyconverter
+package com.chumikov.currencyconverter.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.navigation.fragment.navArgs
 import com.chumikov.currencyconverter.databinding.FragmentCalculationScreenBinding
-import com.chumikov.currencyconverter.databinding.FragmentMainScreenBinding
 
 
 class CalculationScreenFragment : Fragment() {

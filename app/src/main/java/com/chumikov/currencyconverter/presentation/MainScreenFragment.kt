@@ -1,4 +1,4 @@
-package com.chumikov.currencyconverter
+package com.chumikov.currencyconverter.presentation
 
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.fragment.findNavController
+import com.chumikov.currencyconverter.R
 import com.chumikov.currencyconverter.databinding.FragmentMainScreenBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class MainScreenFragment : Fragment() {
@@ -19,6 +25,9 @@ class MainScreenFragment : Fragment() {
     private val binding: FragmentMainScreenBinding
         get() = _binding ?: throw RuntimeException("MainScreenFragment is null")
 
+    private val viewModel by lazy {
+        ViewModelProvider(this)[MainScreenViewModel::class.java]
+    }
 
 
     override fun onCreateView(
@@ -33,15 +42,20 @@ class MainScreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var leftSpinnerVal = "RUB"
-        var rightSpinnerVal = "RUB"
-
         val calcButton = binding.calculationButton
+
         calcButton.setOnClickListener {
-            findNavController().navigate(
-                MainScreenFragmentDirections
-                    .actionMainScreenFragmentToCalculationScreenFragment(leftSpinnerVal, rightSpinnerVal)
-            )
+            lifecycleScope.launch {
+                viewModel.selectedItems.collect {
+                    findNavController().navigate(
+                        MainScreenFragmentDirections
+                            .actionMainScreenFragmentToCalculationScreenFragment(
+                                it.getValue(MainScreenViewModel.LEFT_SPINNER),
+                                it.getValue(MainScreenViewModel.RIGHT_SPINNER)
+                            )
+                    )
+                }
+            }
         }
 
         val currencies = resources.getStringArray(R.array.currency_codes)
@@ -63,12 +77,9 @@ class MainScreenFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                leftSpinnerVal = currencies[position]
-                Log.d("SPINNERS", "leftSpinner: ${currencies[position]}")
+                viewModel.setValue(MainScreenViewModel.LEFT_SPINNER to currencies[position])
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
-
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
         rightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -77,15 +88,10 @@ class MainScreenFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                rightSpinnerVal = currencies[position]
-                Log.d("SPINNERS", "rightSpinner: ${currencies[position]}")
+                viewModel.setValue(MainScreenViewModel.RIGHT_SPINNER to currencies[position])
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
-
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-
-
     }
 
     override fun onDestroyView() {

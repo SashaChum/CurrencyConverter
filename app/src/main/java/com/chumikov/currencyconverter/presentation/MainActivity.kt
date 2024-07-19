@@ -1,21 +1,8 @@
-package com.chumikov.currencyconverter
+package com.chumikov.currencyconverter.presentation
 
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.chumikov.currencyconverter.data.network.ApiFactory
-import com.chumikov.currencyconverter.data.network.ExchangeratesApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-import java.util.concurrent.TimeUnit
+import com.chumikov.currencyconverter.R
 
 class MainActivity : AppCompatActivity() {
 

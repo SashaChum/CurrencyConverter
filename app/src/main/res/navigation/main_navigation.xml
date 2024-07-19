@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainScreenFragment"
-        android:name="com.chumikov.currencyconverter.MainScreenFragment"
+        android:name="com.chumikov.currencyconverter.presentation.MainScreenFragment"
         android:label="MainScreenFragment" >
         <action
             android:id="@+id/action_mainScreenFragment_to_calculationScreenFragment"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/calculationScreenFragment"
-        android:name="com.chumikov.currencyconverter.CalculationScreenFragment"
+        android:name="com.chumikov.currencyconverter.presentation.CalculationScreenFragment"
         android:label="fragment_calculation_screen"
         tools:layout="@layout/fragment_calculation_screen" >
         <argument
