@@ -6,10 +6,10 @@ class GetConvertationResultUseCase(
     private val repository: CurrencyRepositoryImpl
 ) {
     suspend operator fun invoke(
-        currencyFrom: Currency,
-        currencyTo: Currency,
+        currencyFrom: String,
+        currencyTo: String,
         amount: Double
-    ): Double {
+    ): String {
         return repository.getConvertationResult(currencyFrom, currencyTo, amount)
     }
 }
