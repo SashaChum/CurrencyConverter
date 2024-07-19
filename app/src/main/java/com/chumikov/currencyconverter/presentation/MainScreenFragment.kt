@@ -1,22 +1,15 @@
 package com.chumikov.currencyconverter.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.fragment.findNavController
-import com.chumikov.currencyconverter.R
 import com.chumikov.currencyconverter.databinding.FragmentMainScreenBinding
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 
 class MainScreenFragment : Fragment() {
@@ -45,20 +38,16 @@ class MainScreenFragment : Fragment() {
         val calcButton = binding.calculationButton
 
         calcButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.selectedItems.collect {
-                    findNavController().navigate(
-                        MainScreenFragmentDirections
-                            .actionMainScreenFragmentToCalculationScreenFragment(
-                                it.getValue(MainScreenViewModel.LEFT_SPINNER),
-                                it.getValue(MainScreenViewModel.RIGHT_SPINNER)
-                            )
+            findNavController().navigate(
+                MainScreenFragmentDirections
+                    .actionMainScreenFragmentToCalculationScreenFragment(
+                        viewModel.spinnersState.value.leftSpinnerValue,
+                        viewModel.spinnersState.value.rightSpinnerValue
                     )
-                }
-            }
+            )
         }
 
-        val currencies = resources.getStringArray(R.array.currency_codes)
+        val currencies = viewModel.spinnersState.value.currencyList
         val leftSpinner = binding.spinnerLeft
         val rightSpinner = binding.spinnerRight
 
@@ -77,10 +66,12 @@ class MainScreenFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                viewModel.setValue(MainScreenViewModel.LEFT_SPINNER to currencies[position])
+                viewModel.setLeftSpinnerState(currencies[position])
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+
         rightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -88,11 +79,13 @@ class MainScreenFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                viewModel.setValue(MainScreenViewModel.RIGHT_SPINNER to currencies[position])
+                viewModel.setRightSpinnerState(currencies[position])
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
