@@ -31,7 +31,8 @@ class CalculationScreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textView.text = "currencyFrom = ${args.fromCurrency}; currencyTo = ${args.toCurrency}"
+        binding.textView.text =
+            "currencyFrom = ${args.fromCurrency}; currencyTo = ${args.toCurrency}; Amount = ${args.amount}"
 
 
     }

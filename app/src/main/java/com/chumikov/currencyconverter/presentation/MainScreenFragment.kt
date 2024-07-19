@@ -1,6 +1,7 @@
 package com.chumikov.currencyconverter.presentation
 
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,19 +36,23 @@ class MainScreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val calcButton = binding.calculationButton
+        val editText = binding.editTextField
+        editText.setText(viewModel.mainScreenState.value.amountToCalculate)
 
+        val calcButton = binding.calculationButton
         calcButton.setOnClickListener {
+            viewModel.setAmountState(editText.text.toString())
             findNavController().navigate(
                 MainScreenFragmentDirections
                     .actionMainScreenFragmentToCalculationScreenFragment(
-                        viewModel.spinnersState.value.leftSpinnerValue,
-                        viewModel.spinnersState.value.rightSpinnerValue
+                        viewModel.mainScreenState.value.leftSpinnerValue,
+                        viewModel.mainScreenState.value.rightSpinnerValue,
+                        viewModel.mainScreenState.value.amountToCalculate
                     )
             )
         }
 
-        val currencies = viewModel.spinnersState.value.currencyList
+        val currencies = viewModel.mainScreenState.value.currencyList
         val leftSpinner = binding.spinnerLeft
         val rightSpinner = binding.spinnerRight
 

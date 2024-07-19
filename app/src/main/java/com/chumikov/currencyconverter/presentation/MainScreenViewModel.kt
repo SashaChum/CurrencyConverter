@@ -7,19 +7,25 @@ import kotlinx.coroutines.flow.update
 
 class MainScreenViewModel : ViewModel() {
 
-    private val _spinnersState = MutableStateFlow(SpinnersState())
-    val spinnersState = _spinnersState.asStateFlow()
+    private val _mainScreenState = MutableStateFlow(MainScreenState())
+    val mainScreenState = _mainScreenState.asStateFlow()
 
 
     fun setLeftSpinnerState(leftSpinnerVal: String) {
-        _spinnersState.update { oldState ->
+        _mainScreenState.update { oldState ->
             oldState.copy(leftSpinnerValue = leftSpinnerVal)
         }
     }
 
     fun setRightSpinnerState(rightSpinnerVal: String) {
-        _spinnersState.update { oldState ->
+        _mainScreenState.update { oldState ->
             oldState.copy(rightSpinnerValue = rightSpinnerVal)
+        }
+    }
+
+    fun setAmountState(amount: String) {
+        _mainScreenState.update { oldState ->
+            oldState.copy(amountToCalculate = amount)
         }
     }
 

@@ -11,71 +11,48 @@
         android:id="@+id/spinner_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="@+id/spinner_right"
         app:layout_constraintEnd_toStartOf="@+id/spinner_right"
-        android:layout_marginTop="24dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinner_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinner_left"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"/>
+        app:layout_constraintStart_toEndOf="@+id/spinner_left"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_text_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:hint="@string/enter_hint"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_left" />
 
     <Button
         android:id="@+id/calculation_button"
         android:layout_width="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_right"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="72dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="@color/my_dark_blue"
         android:elevation="10dp"
         android:fontFamily="serif"
         android:stateListAnimator="@null"
-        android:text="Рассчитать"
+        android:text="@string/calculate_text"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        android:layout_marginTop="48dp"
-/>
-
-    <ProgressBar
-        android:id="@+id/loader"
-        android:layout_width="84dp"
-        android:layout_height="84dp"
-        android:elevation="12dp"
-        android:indeterminateTint="@color/my_light_blue"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"
-        tools:visibility="visible"/>
-
-    <Button
-        android:id="@+id/retry_button"
-        android:layout_width="match_parent"
-        android:layout_height="84dp"
-        android:layout_marginHorizontal="8dp"
-        android:backgroundTint="@color/my_dark_blue"
-        android:elevation="10dp"
-        android:fontFamily="serif"
-        android:stateListAnimator="@null"
-        android:text="@string/retry_text"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"
-        tools:visibility="visible"/>
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_field" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

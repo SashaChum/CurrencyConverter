@@ -24,5 +24,8 @@
         <argument
             android:name="toCurrency"
             app:argType="string" />
+        <argument
+            android:name="amount"
+            app:argType="string" />
     </fragment>
 </navigation>
