@@ -1,13 +1,15 @@
 package com.chumikov.currencyconverter.presentation
 
 import android.os.Bundle
-import android.text.Editable
-import androidx.fragment.app.Fragment
+import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.chumikov.currencyconverter.databinding.FragmentMainScreenBinding
@@ -33,6 +35,7 @@ class MainScreenFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,7 +58,7 @@ class MainScreenFragment : Fragment() {
         val currencies = viewModel.mainScreenState.value.currencyList
         val leftSpinner = binding.spinnerLeft
         val rightSpinner = binding.spinnerRight
-        val searchSpinner = binding.searchSpinner
+        val testSpinner = binding.regularSpinner
 
         val adapter = ArrayAdapter(
             requireContext(),
@@ -64,7 +67,16 @@ class MainScreenFragment : Fragment() {
         )
         leftSpinner.adapter = adapter
         rightSpinner.adapter = adapter
-        searchSpinner.adapter = adapter
+        testSpinner.adapter = adapter
+
+        setFragmentResultListener("requestKey") { _, bundle ->
+            val leftSpinnerVal = bundle.getString(CalculationScreenFragment.LEFT_SPINNER)
+            val rightSpinnerVal = bundle.getString(CalculationScreenFragment.RIGHT_SPINNER)
+            if (leftSpinnerVal != null && rightSpinnerVal != null ) {
+                leftSpinner.setSelection(viewModel.mainScreenState.value.leftSpinnerIndex)
+                rightSpinner.setSelection(viewModel.mainScreenState.value.rightSpinnerIndex)
+            }
+        }
 
         leftSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -73,7 +85,7 @@ class MainScreenFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                viewModel.setLeftSpinnerState(currencies[position])
+                viewModel.setLeftSpinnerState(currencies[position], position)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -86,13 +98,12 @@ class MainScreenFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                viewModel.setRightSpinnerState(currencies[position])
+                viewModel.setRightSpinnerState(currencies[position], position)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

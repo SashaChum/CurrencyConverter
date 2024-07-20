@@ -1,13 +1,17 @@
 package com.chumikov.currencyconverter.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.chumikov.currencyconverter.R
 import com.chumikov.currencyconverter.databinding.FragmentCalculationScreenBinding
@@ -32,6 +36,8 @@ class CalculationScreenFragment : Fragment() {
 
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +49,22 @@ class CalculationScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    setFragmentResult("requestKey",
+                        bundleOf(
+                            LEFT_SPINNER to args.fromCurrency,
+                            RIGHT_SPINNER to args.toCurrency
+                        )
+                    )
+                    findNavController().popBackStack()
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
 
         val resultTextView = binding.resultTextView
 
@@ -61,15 +83,25 @@ class CalculationScreenFragment : Fragment() {
             }
         }
 
+
+
+
 //        binding.textView.text =
 //            "currencyFrom = ${args.fromCurrency}; currencyTo = ${args.toCurrency}; Amount = ${args.amount}"
 
 
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    companion object {
+        const val LEFT_SPINNER = "leftSpinner"
+        const val RIGHT_SPINNER = "rightSpinner"
     }
 
 }
