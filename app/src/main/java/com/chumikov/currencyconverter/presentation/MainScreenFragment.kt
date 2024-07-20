@@ -16,7 +16,6 @@ import com.chumikov.currencyconverter.R
 import com.chumikov.currencyconverter.databinding.FragmentMainScreenBinding
 import com.chumikov.currencyconverter.domain.Currency
 import kotlinx.coroutines.launch
-import kotlin.time.Duration
 
 
 class MainScreenFragment : Fragment() {
@@ -94,26 +93,44 @@ class MainScreenFragment : Fragment() {
 
         calculationButton.setOnClickListener {
             val amountField = baseCurrencyAmountField.text.toString()
-            if (amountField == "") {
-                Toast.makeText(
-                    requireContext(), getString(R.string.empty_field_warning), Toast.LENGTH_SHORT
-                ).show()
-            } else if(spinnerCurrencyFrom.text.toString() == spinnerCurrencyTo.text.toString()) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.same_currencies_warning), Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                viewModel.setAmountState(amountField)  // обновление стейта
-                val state = viewModel.mainScreenState.value as MainScreenState.Content
-                findNavController().navigate(
-                    MainScreenFragmentDirections
-                        .actionMainScreenFragmentToCalculationScreenFragment(
-                            state.currencyFrom,
-                            state.currencyTo,
-                            state.amountToCalculate
-                        )
-                )
+            val fromCurrencyVal = spinnerCurrencyFrom.text.toString()
+            val toCurrencyVal = spinnerCurrencyTo.text.toString()
+
+            with(viewModel.mainScreenState.value) {  // текущий стейт
+                this as MainScreenState.Content
+                val actualCurrencySymbols = currencyList.map {
+                    it.symbolCode
+                }
+                if ("" in listOf(amountField, fromCurrencyVal, toCurrencyVal)) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.empty_field_warning),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else if (fromCurrencyVal == toCurrencyVal) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.same_currencies_warning), Toast.LENGTH_SHORT
+                    ).show()
+                } else if (fromCurrencyVal.length != 3 || toCurrencyVal.length != 3 ||
+                    fromCurrencyVal !in actualCurrencySymbols || toCurrencyVal !in actualCurrencySymbols
+                ) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.wrong_currency_warning), Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    viewModel.setAmountState(amountField)  // обновление стейта
+                    val newState = viewModel.mainScreenState.value as MainScreenState.Content
+                    findNavController().navigate(
+                        MainScreenFragmentDirections
+                            .actionMainScreenFragmentToCalculationScreenFragment(
+                                newState.currencyFrom,
+                                newState.currencyTo,
+                                newState.amountToCalculate
+                            )
+                    )
+                }
             }
         }
     }

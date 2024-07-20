@@ -3,9 +3,10 @@
     <string name="retry_text">Что-то пошло не так… Повторить.</string>
     <string name="enter_hint">Введите сумму</string>
     <string name="calculate_text">Рассчитать</string>
-    <string name="convertation_result">Полученный результат:\n %s</string>
-    <string name="empty_field_warning">Заполните сумму для расчёта</string>
-    <string name="same_currencies_warning">Выбраны одинаковые значения валют или не выбраны совсем</string>
+    <string name="convertation_result">Результат конвертации\n из %s в %s суммы %s\n составляет %s</string>
+    <string name="empty_field_warning">Все поля должны быть заполнены</string>
+    <string name="same_currencies_warning">Выбраны одинаковые значения валют</string>
+    <string name="wrong_currency_warning">Одно или оба значения валют указаны неверно</string>
 
     <string-array name="currency_codes">
         <item>RUB</item>
