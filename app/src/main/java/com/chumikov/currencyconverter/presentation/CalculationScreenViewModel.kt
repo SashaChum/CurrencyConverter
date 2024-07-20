@@ -15,7 +15,7 @@ class CalculationScreenViewModel(
 ) : ViewModel() {
 
     private val getConversationResultUseCase =
-        GetConvertationResultUseCase(CurrencyRepositoryImpl())
+        GetConvertationResultUseCase(CurrencyRepositoryImpl)
 
 
     private val _mainScreenState =

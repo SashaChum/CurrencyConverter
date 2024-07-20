@@ -7,8 +7,8 @@ import retrofit2.http.Path
 
 interface ExchangeratesApi {
 
-//    @GET("{apiKey}/codes")
-//    suspend fun getAllCurrencies(@Path("apiKey") apiKey: String): CurrencyListDto
+    @GET("{apiKey}/codes")
+    suspend fun getAllCurrencies(@Path("apiKey") apiKey: String): CurrencyListDto
 
     @GET("{apiKey}/pair/{from}/{to}")
     suspend fun getExchangeRate(

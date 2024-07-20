@@ -77,5 +77,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_field" />
 
+    <ProgressBar
+        android:id="@+id/loader"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:elevation="12dp"
+        android:indeterminateTint="@color/my_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/retry_button"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:layout_marginHorizontal="16dp"
+        android:backgroundTint="@color/my_dark_blue"
+        android:elevation="10dp"
+        android:fontFamily="serif"
+        android:stateListAnimator="@null"
+        android:text="@string/retry_text"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
