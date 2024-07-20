@@ -8,6 +8,6 @@ interface CurrencyRepository {
         fromCurrency: String,
         toCurrency: String,
         amount: Double
-    ): String
+    ): Double
 
 }

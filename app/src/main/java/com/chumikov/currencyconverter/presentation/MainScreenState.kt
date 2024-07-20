@@ -9,16 +9,12 @@ sealed interface MainScreenState {
     data object Error : MainScreenState
 
     data class Content(
-
         val amountToCalculate: String = "100",
         val currencyFrom: String = "RUB",
         val currencyTo: String = "RUB",
         val currencyList: List<Currency>
-//        = listOf(
-//            Currency("RUB", "Russian Ruble"),
-//            Currency("EUR", "Euro")
-//        )
     ) : MainScreenState
+
 }
 
 

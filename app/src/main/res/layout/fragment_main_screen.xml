@@ -48,7 +48,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     <EditText
-        android:id="@+id/edit_text_field"
+        android:id="@+id/amount_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -75,7 +75,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_field" />
+        app:layout_constraintTop_toBottomOf="@+id/amount_field" />
 
     <ProgressBar
         android:id="@+id/loader"

@@ -9,4 +9,5 @@ sealed interface CalculationScreenState {
     data class Content(
         val calcResult: String
     ) : CalculationScreenState
+
 }

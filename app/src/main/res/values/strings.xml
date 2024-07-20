@@ -4,6 +4,8 @@
     <string name="enter_hint">Введите сумму</string>
     <string name="calculate_text">Рассчитать</string>
     <string name="convertation_result">Полученный результат:\n %s</string>
+    <string name="empty_field_warning">Заполните сумму для расчёта</string>
+    <string name="same_currencies_warning">Выбраны одинаковые значения валют или не выбраны совсем</string>
 
     <string-array name="currency_codes">
         <item>RUB</item>

@@ -17,10 +17,9 @@ class CalculationScreenViewModel(
     private val getConversationResultUseCase =
         GetConvertationResultUseCase(CurrencyRepositoryImpl)
 
-
-    private val _mainScreenState =
+    private val _calculationScreenState =
         MutableStateFlow<CalculationScreenState>(CalculationScreenState.Loading)
-    val mainScreenState = _mainScreenState.asStateFlow()
+    val calculationScreenState = _calculationScreenState.asStateFlow()
 
 
     init {
@@ -35,18 +34,18 @@ class CalculationScreenViewModel(
                     currencyTo = toCurrency,
                     amount = amount
                 )
-                _mainScreenState.value = CalculationScreenState.Content(
+                _calculationScreenState.value = CalculationScreenState.Content(
                     calcResult = conversationResult
                 )
 
             } catch (e: Exception) {
-                _mainScreenState.value = CalculationScreenState.Error
+                _calculationScreenState.value = CalculationScreenState.Error
             }
         }
     }
 
     fun retry() {
-        _mainScreenState.value = CalculationScreenState.Loading
+        _calculationScreenState.value = CalculationScreenState.Loading
         load()
     }
 

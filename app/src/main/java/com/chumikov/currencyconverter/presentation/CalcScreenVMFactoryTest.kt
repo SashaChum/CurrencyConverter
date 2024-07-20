@@ -2,7 +2,6 @@ package com.chumikov.currencyconverter.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
 
 class CalcScreenVMFactoryTest(
     private val fromCurrency: String,

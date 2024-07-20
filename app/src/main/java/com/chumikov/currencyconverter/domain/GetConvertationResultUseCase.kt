@@ -1,6 +1,8 @@
 package com.chumikov.currencyconverter.domain
 
 import com.chumikov.currencyconverter.data.repository.CurrencyRepositoryImpl
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class GetConvertationResultUseCase(
     private val repository: CurrencyRepositoryImpl
@@ -10,6 +12,9 @@ class GetConvertationResultUseCase(
         currencyTo: String,
         amount: Double
     ): String {
-        return repository.getConvertationResult(currencyFrom, currencyTo, amount)
+        val repoResult = repository.getConvertationResult(currencyFrom, currencyTo, amount)
+        val decimalFormat = DecimalFormat("#.###")  // сделал три знака после запятой
+        decimalFormat.roundingMode = RoundingMode.HALF_EVEN  // и банковское округление
+        return decimalFormat.format(repoResult)  // как некие элементы бизнес-логики
     }
 }

@@ -4,13 +4,12 @@ import com.chumikov.currencyconverter.data.network.ApiFactory
 import com.chumikov.currencyconverter.data.network.ExchangeratesApi
 import com.chumikov.currencyconverter.domain.Currency
 import com.chumikov.currencyconverter.domain.CurrencyRepository
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
- object CurrencyRepositoryImpl : CurrencyRepository {
 
-     private const val API_KEY = "aad958292bc85ba014d0578e"
-     private val api: ExchangeratesApi = ApiFactory.exchageRateApi
+object CurrencyRepositoryImpl : CurrencyRepository {
+
+    private const val API_KEY = "aad958292bc85ba014d0578e"
+    private val api: ExchangeratesApi = ApiFactory.exchageRateApi
 
     override suspend fun getCurrencyList(): List<Currency> {
         val dtoObject = api.getAllCurrencies(API_KEY)
@@ -23,15 +22,13 @@ import java.text.DecimalFormat
         fromCurrency: String,
         toCurrency: String,
         amount: Double
-    ): String {
+    ): Double {
         val rateDto = api.getExchangeRate(
             apiKey = API_KEY,
             fromCurrency = fromCurrency,
             toCurrency = toCurrency,
         )
-        val decimalFormat = DecimalFormat("#.###")  // три знака после запятой
-        decimalFormat.roundingMode = RoundingMode.HALF_EVEN  // банковское округление
-        return decimalFormat.format(rateDto.rate * amount)
+        return rateDto.rate * amount
     }
 
 }
