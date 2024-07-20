@@ -11,15 +11,15 @@ class MainScreenViewModel : ViewModel() {
     val mainScreenState = _mainScreenState.asStateFlow()
 
 
-    fun setLeftSpinnerState(leftSpinnerVal: String, index: Int) {
+    fun setCurrencyFromSpinnerState(currencyFrom: String) {
         _mainScreenState.update { oldState ->
-            oldState.copy(leftSpinnerValue = leftSpinnerVal, leftSpinnerIndex = index)
+            oldState.copy(currencyFrom = currencyFrom)
         }
     }
 
-    fun setRightSpinnerState(rightSpinnerVal: String, index: Int) {
+    fun setCurrencyToSpinnerState(currencyTo: String) {
         _mainScreenState.update { oldState ->
-            oldState.copy(rightSpinnerValue = rightSpinnerVal, rightSpinnerIndex = index)
+            oldState.copy(currencyTo = currencyTo)
         }
     }
 

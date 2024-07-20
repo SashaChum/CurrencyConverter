@@ -22,7 +22,7 @@ class CalculationScreenFragment : Fragment() {
 
     private var _binding: FragmentCalculationScreenBinding? = null
     private val binding: FragmentCalculationScreenBinding
-        get() = _binding ?: throw RuntimeException("CalculationScreenFragment is null")
+        get() = checkNotNull(_binding) { "CalculationScreenFragment is null" }
 
     private val args by navArgs<CalculationScreenFragmentArgs>()
 
@@ -35,9 +35,6 @@ class CalculationScreenFragment : Fragment() {
     }
 
 
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,30 +44,16 @@ class CalculationScreenFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val callback: OnBackPressedCallback =
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    setFragmentResult("requestKey",
-                        bundleOf(
-                            LEFT_SPINNER to args.fromCurrency,
-                            RIGHT_SPINNER to args.toCurrency
-                        )
-                    )
-                    findNavController().popBackStack()
-                }
-            }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-
-
         val resultTextView = binding.resultTextView
-
+        val retryButton = binding.retryButton
+        retryButton.setOnClickListener { viewModel.retry() }
 
         lifecycleScope.launch {
-            viewModel.mainScreenState.collect {state ->
+            viewModel.mainScreenState.collect { state ->
                 binding.retryButton.isInvisible = state !is CalculationScreenState.Error
                 binding.loader.isInvisible = state !is CalculationScreenState.Loading
                 resultTextView.isInvisible = state !is CalculationScreenState.Content
@@ -82,26 +65,10 @@ class CalculationScreenFragment : Fragment() {
                 }
             }
         }
-
-
-
-
-//        binding.textView.text =
-//            "currencyFrom = ${args.fromCurrency}; currencyTo = ${args.toCurrency}; Amount = ${args.amount}"
-
-
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
-    companion object {
-        const val LEFT_SPINNER = "leftSpinner"
-        const val RIGHT_SPINNER = "rightSpinner"
-    }
-
 }

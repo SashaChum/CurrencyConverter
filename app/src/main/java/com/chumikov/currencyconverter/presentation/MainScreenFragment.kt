@@ -1,25 +1,24 @@
 package com.chumikov.currencyconverter.presentation
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.chumikov.currencyconverter.R
 import com.chumikov.currencyconverter.databinding.FragmentMainScreenBinding
+import java.lang.IllegalStateException
 
 
 class MainScreenFragment : Fragment() {
 
     private var _binding: FragmentMainScreenBinding? = null
     private val binding: FragmentMainScreenBinding
-        get() = _binding ?: throw RuntimeException("MainScreenFragment is null")
+        get() = _binding ?: throw IllegalStateException("MainScreenFragment is null")
 
     private val viewModel by lazy {
         ViewModelProvider(this)[MainScreenViewModel::class.java]
@@ -45,63 +44,50 @@ class MainScreenFragment : Fragment() {
         val calcButton = binding.calculationButton
         calcButton.setOnClickListener {
             viewModel.setAmountState(editText.text.toString())
+            val state = viewModel.mainScreenState.value
             findNavController().navigate(
                 MainScreenFragmentDirections
                     .actionMainScreenFragmentToCalculationScreenFragment(
-                        viewModel.mainScreenState.value.leftSpinnerValue,
-                        viewModel.mainScreenState.value.rightSpinnerValue,
-                        viewModel.mainScreenState.value.amountToCalculate
+                        state.currencyFrom,
+                        state.currencyTo,
+                        state.amountToCalculate
                     )
             )
         }
 
-        val currencies = viewModel.mainScreenState.value.currencyList
-        val leftSpinner = binding.spinnerLeft
-        val rightSpinner = binding.spinnerRight
+        val spinnerCurrencyFrom = binding.spinnerCurrencyFrom
+        val spinnerCurrencyTo = binding.spinnerCurrencyTo
+        with(viewModel.mainScreenState.value) {
+            spinnerCurrencyFrom.setText(currencyFrom)
+            spinnerCurrencyTo.setText(currencyTo)
+        }
 
-        val adapter = ArrayAdapter(
+        val adapterCurrencyFrom = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
-            currencies
+            viewModel.mainScreenState.value.currencyList
         )
-        leftSpinner.adapter = adapter
-        rightSpinner.adapter = adapter
+        val adapterCurrencyTo = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            viewModel.mainScreenState.value.currencyList
+        )
 
-        setFragmentResultListener("requestKey") { _, bundle ->
-            val leftSpinnerVal = bundle.getString(CalculationScreenFragment.LEFT_SPINNER)
-            val rightSpinnerVal = bundle.getString(CalculationScreenFragment.RIGHT_SPINNER)
-            if (leftSpinnerVal != null && rightSpinnerVal != null ) {
-                leftSpinner.setSelection(viewModel.mainScreenState.value.leftSpinnerIndex)
-                rightSpinner.setSelection(viewModel.mainScreenState.value.rightSpinnerIndex)
-            }
+        spinnerCurrencyFrom.setAdapter(adapterCurrencyFrom)
+        spinnerCurrencyTo.setAdapter(adapterCurrencyTo)
+
+        spinnerCurrencyFrom.setOnItemClickListener { parent, _, position, _ ->
+            val selectedValue = parent.getItemAtPosition(position).toString()
+            Log.d("Inspection", "currencyFromSpinner selected Item: $selectedValue")
+            viewModel.setCurrencyFromSpinnerState(selectedValue)
         }
-
-        leftSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                viewModel.setLeftSpinnerState(currencies[position], position)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        rightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                viewModel.setRightSpinnerState(currencies[position], position)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        spinnerCurrencyTo.setOnItemClickListener { parent, _, position, _ ->
+            val selectedValue = parent.getItemAtPosition(position).toString()
+            Log.d("Inspection", "currencyToSpinner selected Item: $selectedValue")
+            viewModel.setCurrencyToSpinnerState(selectedValue)
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

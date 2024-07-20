@@ -19,7 +19,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    companion object {
-        private const val API_KEY = "aad958292bc85ba014d0578e"
-    }
 }
