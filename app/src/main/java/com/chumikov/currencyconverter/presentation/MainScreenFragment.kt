@@ -58,7 +58,6 @@ class MainScreenFragment : Fragment() {
         val currencies = viewModel.mainScreenState.value.currencyList
         val leftSpinner = binding.spinnerLeft
         val rightSpinner = binding.spinnerRight
-        val testSpinner = binding.regularSpinner
 
         val adapter = ArrayAdapter(
             requireContext(),
@@ -67,7 +66,6 @@ class MainScreenFragment : Fragment() {
         )
         leftSpinner.adapter = adapter
         rightSpinner.adapter = adapter
-        testSpinner.adapter = adapter
 
         setFragmentResultListener("requestKey") { _, bundle ->
             val leftSpinnerVal = bundle.getString(CalculationScreenFragment.LEFT_SPINNER)
