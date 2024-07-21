@@ -18,17 +18,16 @@ object CurrencyRepositoryImpl : CurrencyRepository {
         }
     }
 
-    override suspend fun getConvertationResult(
+    override suspend fun getCurrencyRate(
         fromCurrency: String,
         toCurrency: String,
-        amount: Double
     ): Double {
         val rateDto = api.getExchangeRate(
             apiKey = API_KEY,
             fromCurrency = fromCurrency,
             toCurrency = toCurrency,
         )
-        return rateDto.rate * amount
+        return rateDto.rate
     }
 
 }

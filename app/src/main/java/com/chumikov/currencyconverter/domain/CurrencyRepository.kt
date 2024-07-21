@@ -4,10 +4,9 @@ interface CurrencyRepository {
 
     suspend fun getCurrencyList(): List<Currency>
 
-    suspend fun getConvertationResult(
+    suspend fun getCurrencyRate(
         fromCurrency: String,
         toCurrency: String,
-        amount: Double
     ): Double
 
 }

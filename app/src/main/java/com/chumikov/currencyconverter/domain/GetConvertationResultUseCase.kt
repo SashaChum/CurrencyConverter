@@ -12,9 +12,9 @@ class GetConvertationResultUseCase(
         currencyTo: String,
         amount: Double
     ): String {
-        val repoResult = repository.getConvertationResult(currencyFrom, currencyTo, amount)
+        val currencyRate = repository.getCurrencyRate(currencyFrom, currencyTo)
         val decimalFormat = DecimalFormat("#.###")  // сделал три знака после запятой
         decimalFormat.roundingMode = RoundingMode.HALF_EVEN  // и банковское округление
-        return decimalFormat.format(repoResult)  // как некие элементы бизнес-логики
+        return decimalFormat.format(currencyRate * amount)  // как некие элементы бизнес-логики
     }
 }
