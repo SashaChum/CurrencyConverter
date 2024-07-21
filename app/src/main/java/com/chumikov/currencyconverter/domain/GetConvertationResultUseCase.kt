@@ -1,6 +1,5 @@
 package com.chumikov.currencyconverter.domain
 
-import com.chumikov.currencyconverter.data.repository.CurrencyRepositoryImpl
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import javax.inject.Inject

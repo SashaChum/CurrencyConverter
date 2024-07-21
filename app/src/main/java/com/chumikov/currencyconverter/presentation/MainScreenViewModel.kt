@@ -2,7 +2,6 @@ package com.chumikov.currencyconverter.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chumikov.currencyconverter.data.repository.CurrencyRepositoryImpl
 import com.chumikov.currencyconverter.domain.GetCurrencyListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,6 +1,5 @@
 package com.chumikov.currencyconverter.domain
 
-import com.chumikov.currencyconverter.data.repository.CurrencyRepositoryImpl
 import javax.inject.Inject
 
 

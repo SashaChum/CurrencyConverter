@@ -1,11 +1,11 @@
 package com.chumikov.currencyconverter.data.network
 
-import com.chumikov.currencyconverter.data.network.dto_classes.CurrencyListDto
-import com.chumikov.currencyconverter.data.network.dto_classes.ExchangeRateDto
+import com.chumikov.currencyconverter.data.network.dto.CurrencyListDto
+import com.chumikov.currencyconverter.data.network.dto.ExchangeRateDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface ExchangeratesApi {
+interface ExchangeRatesApi {
 
     @GET("{apiKey}/codes")
     suspend fun getAllCurrencies(@Path("apiKey") apiKey: String): CurrencyListDto

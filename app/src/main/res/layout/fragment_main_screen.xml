@@ -16,8 +16,7 @@
         app:layout_constraintEnd_toStartOf="@+id/spinner_currency_to_layout"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:hint="Базовая валюта"
-        >
+        android:hint="@string/base_currency_text" >
 
         <AutoCompleteTextView
             android:id="@+id/spinner_currency_from"
@@ -37,7 +36,7 @@
         app:layout_constraintStart_toEndOf="@+id/spinner_currency_from_layout"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:hint="Целевая валюта"
+        android:hint="@string/target_currency_text"
         >
             <AutoCompleteTextView
                 android:id="@+id/spinner_currency_to"
@@ -86,8 +85,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/retry_button"
@@ -105,8 +103,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

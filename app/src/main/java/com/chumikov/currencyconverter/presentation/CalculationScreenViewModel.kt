@@ -2,7 +2,6 @@ package com.chumikov.currencyconverter.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chumikov.currencyconverter.data.repository.CurrencyRepositoryImpl
 import com.chumikov.currencyconverter.domain.GetConvertationResultUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

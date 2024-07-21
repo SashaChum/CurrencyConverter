@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.chumikov.currencyconverter.R
@@ -64,7 +63,6 @@ class MainScreenFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.mainScreenState.collect { state ->
-                Log.d("Inspection", "collect invoke")
                 binding.spinnerCurrencyFromLayout.isVisible = state is MainScreenState.Content
                 binding.spinnerCurrencyToLayout.isVisible = state is MainScreenState.Content
                 spinnerCurrencyFrom.isVisible = state is MainScreenState.Content
@@ -109,37 +107,37 @@ class MainScreenFragment : Fragment() {
             val fromCurrencyVal = spinnerCurrencyFrom.text.toString()
             val toCurrencyVal = spinnerCurrencyTo.text.toString()
 
-            with(viewModel.mainScreenState.value) {  // текущий стейт
-                this as MainScreenState.Content
-                val actualCurrencySymbols = currencyList.map {
+            val state = viewModel.mainScreenState.value   // текущий стейт
+            if (state is MainScreenState.Content) {
+                val actualCurrencySymbols = state.currencyList.map {
                     it.symbolCode
                 }
                 when {
-                    "" in listOf(amountField, fromCurrencyVal, toCurrencyVal) -> {
+                    amountField.isEmpty() || fromCurrencyVal.isEmpty() || toCurrencyVal.isEmpty() -> {
                         makeToast(getString(R.string.empty_field_warning))
                     }
+
                     fromCurrencyVal == toCurrencyVal -> {
                         makeToast(getString(R.string.same_currencies_warning))
                     }
-                    listOf(
-                        fromCurrencyVal.length != 3,
-                        toCurrencyVal.length != 3,
-                        fromCurrencyVal !in actualCurrencySymbols,
-                        toCurrencyVal !in actualCurrencySymbols
-                    ).any { it } -> {
+
+                    fromCurrencyVal !in actualCurrencySymbols || toCurrencyVal !in actualCurrencySymbols -> {
                         makeToast(getString(R.string.wrong_currency_warning))
                     }
+
                     else -> {
                         viewModel.setAmountState(amountField)  // обновление стейта
-                        val newState = viewModel.mainScreenState.value as MainScreenState.Content
-                        findNavController().navigate(
-                            MainScreenFragmentDirections
-                                .actionMainScreenFragmentToCalculationScreenFragment(
-                                    newState.currencyFrom,
-                                    newState.currencyTo,
-                                    newState.amountToCalculate
-                                )
-                        )
+                        val newState = viewModel.mainScreenState.value
+                        if (newState is MainScreenState.Content) {
+                            findNavController().navigate(
+                                MainScreenFragmentDirections
+                                    .actionMainScreenFragmentToCalculationScreenFragment(
+                                        newState.currencyFrom,
+                                        newState.currencyTo,
+                                        newState.amountToCalculate
+                                    )
+                            )
+                        }
                     }
                 }
             }

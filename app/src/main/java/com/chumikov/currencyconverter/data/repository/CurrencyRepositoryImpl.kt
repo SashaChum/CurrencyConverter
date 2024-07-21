@@ -1,14 +1,13 @@
 package com.chumikov.currencyconverter.data.repository
 
-import com.chumikov.currencyconverter.data.network.ApiFactory
-import com.chumikov.currencyconverter.data.network.ExchangeratesApi
+import com.chumikov.currencyconverter.data.network.ExchangeRatesApi
 import com.chumikov.currencyconverter.domain.Currency
 import com.chumikov.currencyconverter.domain.CurrencyRepository
 import javax.inject.Inject
 
 
 class CurrencyRepositoryImpl @Inject constructor(
-     private val api: ExchangeratesApi
+     private val api: ExchangeRatesApi
 ) : CurrencyRepository {
 
     override suspend fun getCurrencyList(): List<Currency> {

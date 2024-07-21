@@ -1,4 +1,4 @@
-package com.chumikov.currencyconverter.data.network.dto_classes
+package com.chumikov.currencyconverter.data.network.dto
 
 import com.google.gson.annotations.SerializedName
 

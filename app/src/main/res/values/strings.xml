@@ -7,6 +7,8 @@
     <string name="empty_field_warning">Все поля должны быть заполнены</string>
     <string name="same_currencies_warning">Выбраны одинаковые значения валют</string>
     <string name="wrong_currency_warning">Одно или оба значения валют указаны неверно</string>
+    <string name="base_currency_text">Базовая валюта</string>
+    <string name="target_currency_text">Целевая валюта</string>
 
     <string-array name="currency_codes">
         <item>RUB</item>

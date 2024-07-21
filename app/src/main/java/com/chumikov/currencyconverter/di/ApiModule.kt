@@ -1,6 +1,6 @@
 package com.chumikov.currencyconverter.di
 
-import com.chumikov.currencyconverter.data.network.ExchangeratesApi
+import com.chumikov.currencyconverter.data.network.ExchangeRatesApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -12,7 +12,7 @@ class ApiModule {
 
     @ApplicationScope
     @Provides
-    fun providesApi(): ExchangeratesApi {
+    fun providesApi(): ExchangeRatesApi {
         val baseUrl = "https://v6.exchangerate-api.com/v6/"
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
@@ -21,6 +21,6 @@ class ApiModule {
             .client(client)
             .build()
 
-        return retrofit.create(ExchangeratesApi::class.java)
+        return retrofit.create(ExchangeRatesApi::class.java)
     }
 }
