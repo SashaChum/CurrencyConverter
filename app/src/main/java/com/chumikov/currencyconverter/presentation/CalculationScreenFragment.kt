@@ -46,25 +46,25 @@ class CalculationScreenFragment : Fragment() {
 
         val resultTextView = binding.resultTextView
         val retryButton = binding.retryButton
-        retryButton.setOnClickListener { viewModel.retry() }
+//        retryButton.setOnClickListener { viewModel.retry() }
 
-        lifecycleScope.launch {
-            viewModel.calculationScreenState.collect { state ->
-                binding.loader.isVisible = state is CalculationScreenState.Loading
-                retryButton.isVisible = state is CalculationScreenState.Error
-                resultTextView.isVisible = state is CalculationScreenState.Content
-
-                if (state is CalculationScreenState.Content) {
-                    resultTextView.text = String.format(
-                        getString(R.string.convertation_result),
-                        args.fromCurrency,
-                        args.toCurrency,
-                        args.amount,
-                        state.calcResult
-                    )
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.calculationScreenState.collect { state ->
+//                binding.loader.isVisible = state is CalculationScreenState.Loading
+//                retryButton.isVisible = state is CalculationScreenState.Error
+//                resultTextView.isVisible = state is CalculationScreenState.Content
+//
+//                if (state is CalculationScreenState.Content) {
+//                    resultTextView.text = String.format(
+//                        getString(R.string.convertation_result),
+//                        args.fromCurrency,
+//                        args.toCurrency,
+//                        args.amount,
+//                        state.calcResult
+//                    )
+//                }
+//            }
+//        }
     }
 
     override fun onDestroyView() {

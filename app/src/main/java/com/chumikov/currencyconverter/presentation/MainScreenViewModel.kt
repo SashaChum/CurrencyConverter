@@ -8,10 +8,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainScreenViewModel : ViewModel() {
-
-    private val getCurrencyListUseCase = GetCurrencyListUseCase(CurrencyRepositoryImpl)
+class MainScreenViewModel @Inject constructor(
+    private val getCurrencyListUseCase: GetCurrencyListUseCase
+) : ViewModel() {
 
     private val _mainScreenState = MutableStateFlow<MainScreenState>(MainScreenState.Loading)
     val mainScreenState = _mainScreenState.asStateFlow()

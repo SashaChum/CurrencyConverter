@@ -4,12 +4,12 @@ import com.chumikov.currencyconverter.data.network.ApiFactory
 import com.chumikov.currencyconverter.data.network.ExchangeratesApi
 import com.chumikov.currencyconverter.domain.Currency
 import com.chumikov.currencyconverter.domain.CurrencyRepository
+import javax.inject.Inject
 
 
-object CurrencyRepositoryImpl : CurrencyRepository {
-
-    private const val API_KEY = "aad958292bc85ba014d0578e"
-    private val api: ExchangeratesApi = ApiFactory.exchageRateApi
+class CurrencyRepositoryImpl @Inject constructor(
+     private val api: ExchangeratesApi
+) : CurrencyRepository {
 
     override suspend fun getCurrencyList(): List<Currency> {
         val dtoObject = api.getAllCurrencies(API_KEY)
@@ -28,6 +28,10 @@ object CurrencyRepositoryImpl : CurrencyRepository {
             toCurrency = toCurrency,
         )
         return rateDto.rate
+    }
+
+    companion object {
+        private const val API_KEY = "aad958292bc85ba014d0578e"
     }
 
 }

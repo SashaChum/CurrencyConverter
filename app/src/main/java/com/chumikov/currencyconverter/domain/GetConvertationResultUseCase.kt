@@ -3,9 +3,10 @@ package com.chumikov.currencyconverter.domain
 import com.chumikov.currencyconverter.data.repository.CurrencyRepositoryImpl
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import javax.inject.Inject
 
-class GetConvertationResultUseCase(
-    private val repository: CurrencyRepositoryImpl
+class GetConvertationResultUseCase @Inject constructor(
+    private val repository: CurrencyRepository
 ) {
     suspend operator fun invoke(
         currencyFrom: String,

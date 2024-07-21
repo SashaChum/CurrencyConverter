@@ -1,5 +1,6 @@
 package com.chumikov.currencyconverter.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,18 +17,30 @@ import com.chumikov.currencyconverter.R
 import com.chumikov.currencyconverter.databinding.FragmentMainScreenBinding
 import com.chumikov.currencyconverter.domain.Currency
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Provider
 
 
 class MainScreenFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModelProvider: Provider<MainScreenViewModel>
+
+    private val viewModel by getViewModel { viewModelProvider.get() }
+
+    private val component by lazy {
+        (requireActivity().application as MyApplication).component
+    }
 
     private var _binding: FragmentMainScreenBinding? = null
     private val binding: FragmentMainScreenBinding
         get() = _binding ?: throw IllegalStateException("MainScreenFragment is null")
 
-    private val viewModel by lazy {
-        ViewModelProvider(this)[MainScreenViewModel::class.java]
-    }
 
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -103,25 +116,18 @@ class MainScreenFragment : Fragment() {
                 }
                 when {
                     "" in listOf(amountField, fromCurrencyVal, toCurrencyVal) -> {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.empty_field_warning),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        makeToast(getString(R.string.empty_field_warning))
                     }
                     fromCurrencyVal == toCurrencyVal -> {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.same_currencies_warning), Toast.LENGTH_SHORT
-                        ).show()
+                        makeToast(getString(R.string.same_currencies_warning))
                     }
-                    fromCurrencyVal.length != 3 || toCurrencyVal.length != 3
-                            || fromCurrencyVal !in actualCurrencySymbols
-                            || toCurrencyVal !in actualCurrencySymbols -> {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.wrong_currency_warning), Toast.LENGTH_SHORT
-                        ).show()
+                    listOf(
+                        fromCurrencyVal.length != 3,
+                        toCurrencyVal.length != 3,
+                        fromCurrencyVal !in actualCurrencySymbols,
+                        toCurrencyVal !in actualCurrencySymbols
+                    ).any { it } -> {
+                        makeToast(getString(R.string.wrong_currency_warning))
                     }
                     else -> {
                         viewModel.setAmountState(amountField)  // обновление стейта
@@ -138,6 +144,14 @@ class MainScreenFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun makeToast(text: String) {
+        Toast.makeText(
+            requireContext(),
+            text,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 
