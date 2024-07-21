@@ -11,7 +11,7 @@ import dagger.Component
 interface ApplicationComponent {
 
     fun inject(fragment: MainScreenFragment)
-//    fun inject(fragment: CalculationScreenFragment)
+    fun inject(fragment: CalculationScreenFragment)
 
     @Component.Factory
     interface ApplicationComponentFactory {

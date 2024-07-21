@@ -1,5 +1,6 @@
 package com.chumikov.currencyconverter.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,22 +13,36 @@ import androidx.navigation.fragment.navArgs
 import com.chumikov.currencyconverter.R
 import com.chumikov.currencyconverter.databinding.FragmentCalculationScreenBinding
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 class CalculationScreenFragment : Fragment() {
+
+    private val args by navArgs<CalculationScreenFragmentArgs>()
+
+    @Inject
+    lateinit var viewModelFactory: CalculationScreenViewModel.Factory
+
+    private val viewModel by getViewModel {
+        viewModelFactory.get(
+            args.fromCurrency,
+            args.toCurrency,
+            args.amount.toDouble()
+        )
+    }
+
+    private val component by lazy {
+        (requireActivity().application as MyApplication).component
+    }
 
     private var _binding: FragmentCalculationScreenBinding? = null
     private val binding: FragmentCalculationScreenBinding
         get() = checkNotNull(_binding) { "CalculationScreenFragment is null" }
 
-    private val args by navArgs<CalculationScreenFragmentArgs>()
 
-    private val viewModel by viewModels<CalculationScreenViewModel> {
-        CalcScreenVMFactoryTest(
-            args.fromCurrency,
-            args.toCurrency,
-            args.amount.toDouble()
-        )
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
     }
 
 
@@ -46,25 +61,25 @@ class CalculationScreenFragment : Fragment() {
 
         val resultTextView = binding.resultTextView
         val retryButton = binding.retryButton
-//        retryButton.setOnClickListener { viewModel.retry() }
+        retryButton.setOnClickListener { viewModel.retry() }
 
-//        lifecycleScope.launch {
-//            viewModel.calculationScreenState.collect { state ->
-//                binding.loader.isVisible = state is CalculationScreenState.Loading
-//                retryButton.isVisible = state is CalculationScreenState.Error
-//                resultTextView.isVisible = state is CalculationScreenState.Content
-//
-//                if (state is CalculationScreenState.Content) {
-//                    resultTextView.text = String.format(
-//                        getString(R.string.convertation_result),
-//                        args.fromCurrency,
-//                        args.toCurrency,
-//                        args.amount,
-//                        state.calcResult
-//                    )
-//                }
-//            }
-//        }
+        lifecycleScope.launch {
+            viewModel.calculationScreenState.collect { state ->
+                binding.loader.isVisible = state is CalculationScreenState.Loading
+                retryButton.isVisible = state is CalculationScreenState.Error
+                resultTextView.isVisible = state is CalculationScreenState.Content
+
+                if (state is CalculationScreenState.Content) {
+                    resultTextView.text = String.format(
+                        getString(R.string.convertation_result),
+                        args.fromCurrency,
+                        args.toCurrency,
+                        args.amount,
+                        state.calcResult
+                    )
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
