@@ -9,12 +9,16 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.chumikov.currencyconverter.R
 import com.chumikov.currencyconverter.databinding.FragmentMainScreenBinding
 import com.chumikov.currencyconverter.domain.Currency
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
@@ -35,7 +39,6 @@ class MainScreenFragment : Fragment() {
     private val binding: FragmentMainScreenBinding
         get() = _binding ?: throw IllegalStateException("MainScreenFragment is null")
 
-
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
@@ -49,7 +52,6 @@ class MainScreenFragment : Fragment() {
         _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,35 +73,50 @@ class MainScreenFragment : Fragment() {
                 calculationButton.isVisible = state is MainScreenState.Content
                 binding.loader.isVisible = state is MainScreenState.Loading
                 retryButton.isVisible = state is MainScreenState.Error
+            }
+        }
 
-                if (state is MainScreenState.Content) {
+        lifecycleScope.launch {
+            viewModel.mainScreenState
+                .filterIsInstance<MainScreenState.Content>()
+                .map { it.currencyList }
+                .distinctUntilChanged()
+                .collect { currencyList ->
                     val adapterCurrencyFrom = ArrayAdapter(
                         requireContext(),
                         android.R.layout.simple_spinner_item,
-                        state.currencyList
+                        currencyList
                     )
                     val adapterCurrencyTo = ArrayAdapter(
                         requireContext(),
                         android.R.layout.simple_spinner_item,
-                        state.currencyList
+                        currencyList
                     )
                     spinnerCurrencyFrom.setAdapter(adapterCurrencyFrom)
                     spinnerCurrencyTo.setAdapter(adapterCurrencyTo)
-
-                    spinnerCurrencyFrom.setOnItemClickListener { parent, _, position, _ ->
-                        val selectedItem = parent.getItemAtPosition(position) as Currency
-                        val symbolCode = selectedItem.symbolCode
-                        spinnerCurrencyFrom.setText(symbolCode)
-                        viewModel.setCurrencyFromSpinnerState(symbolCode)
-                    }
-                    spinnerCurrencyTo.setOnItemClickListener { parent, _, position, _ ->
-                        val selectedItem = parent.getItemAtPosition(position) as Currency
-                        val symbolCode = selectedItem.symbolCode
-                        spinnerCurrencyTo.setText(symbolCode)
-                        viewModel.setCurrencyToSpinnerState(symbolCode)
-                    }
                 }
-            }
+        }
+
+        spinnerCurrencyFrom.doAfterTextChanged { text ->
+            viewModel.setCurrencyFromSpinnerState(text.toString())
+        }
+
+        spinnerCurrencyTo.doAfterTextChanged { text ->
+            viewModel.setCurrencyToSpinnerState(text.toString())
+        }
+
+        spinnerCurrencyFrom.setOnItemClickListener { parent, _, position, _ ->
+            val selectedItem = parent.getItemAtPosition(position) as Currency
+            val symbolCode = selectedItem.symbolCode
+            spinnerCurrencyFrom.setText(symbolCode)
+            viewModel.setCurrencyFromSpinnerState(symbolCode)
+        }
+
+        spinnerCurrencyTo.setOnItemClickListener { parent, _, position, _ ->
+            val selectedItem = parent.getItemAtPosition(position) as Currency
+            val symbolCode = selectedItem.symbolCode
+            spinnerCurrencyTo.setText(symbolCode)
+            viewModel.setCurrencyToSpinnerState(symbolCode)
         }
 
         calculationButton.setOnClickListener {
