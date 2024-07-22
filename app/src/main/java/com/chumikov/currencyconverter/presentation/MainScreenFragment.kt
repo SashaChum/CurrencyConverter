@@ -97,18 +97,23 @@ class MainScreenFragment : Fragment() {
                 }
         }
 
-        spinnerCurrencyFrom.doAfterTextChanged { text ->
-            viewModel.setCurrencyFromSpinnerState(text.toString())
+        baseCurrencyAmountField.doAfterTextChanged { fieldValue ->
+            viewModel.setAmountState(fieldValue.toString())
         }
 
-        spinnerCurrencyTo.doAfterTextChanged { text ->
-            viewModel.setCurrencyToSpinnerState(text.toString())
+        spinnerCurrencyFrom.doAfterTextChanged { fieldValue ->
+            viewModel.setCurrencyFromSpinnerState(fieldValue.toString())
+        }
+
+        spinnerCurrencyTo.doAfterTextChanged { fieldValue ->
+            viewModel.setCurrencyToSpinnerState(fieldValue.toString())
         }
 
         spinnerCurrencyFrom.setOnItemClickListener { parent, _, position, _ ->
             val selectedItem = parent.getItemAtPosition(position) as Currency
             val symbolCode = selectedItem.symbolCode
             spinnerCurrencyFrom.setText(symbolCode)
+            spinnerCurrencyFrom.setSelection(symbolCode.length)
             viewModel.setCurrencyFromSpinnerState(symbolCode)
         }
 
@@ -116,16 +121,17 @@ class MainScreenFragment : Fragment() {
             val selectedItem = parent.getItemAtPosition(position) as Currency
             val symbolCode = selectedItem.symbolCode
             spinnerCurrencyTo.setText(symbolCode)
+            spinnerCurrencyTo.setSelection(symbolCode.length)
             viewModel.setCurrencyToSpinnerState(symbolCode)
         }
 
         calculationButton.setOnClickListener {
-            val amountField = baseCurrencyAmountField.text.toString()
-            val fromCurrencyVal = spinnerCurrencyFrom.text.toString()
-            val toCurrencyVal = spinnerCurrencyTo.text.toString()
-
-            val state = viewModel.mainScreenState.value   // текущий стейт
+            val state = viewModel.mainScreenState.value
             if (state is MainScreenState.Content) {
+                val amountField = state.amountToCalculate
+                val fromCurrencyVal = state.currencyFrom
+                val toCurrencyVal = state.currencyTo
+
                 val actualCurrencySymbols = state.currencyList.map {
                     it.symbolCode
                 }
@@ -143,18 +149,14 @@ class MainScreenFragment : Fragment() {
                     }
 
                     else -> {
-                        viewModel.setAmountState(amountField)  // обновление стейта
-                        val newState = viewModel.mainScreenState.value
-                        if (newState is MainScreenState.Content) {
-                            findNavController().navigate(
-                                MainScreenFragmentDirections
-                                    .actionMainScreenFragmentToCalculationScreenFragment(
-                                        newState.currencyFrom,
-                                        newState.currencyTo,
-                                        newState.amountToCalculate
-                                    )
-                            )
-                        }
+                        findNavController().navigate(
+                            MainScreenFragmentDirections
+                                .actionMainScreenFragmentToCalculationScreenFragment(
+                                    fromCurrencyVal,
+                                    toCurrencyVal,
+                                    amountField
+                                )
+                        )
                     }
                 }
             }

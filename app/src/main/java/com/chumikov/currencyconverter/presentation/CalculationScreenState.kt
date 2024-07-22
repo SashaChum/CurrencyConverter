@@ -7,6 +7,9 @@ sealed interface CalculationScreenState {
     data object Error : CalculationScreenState
 
     data class Content(
+        val currencyFrom: String,
+        val currencyTo: String,
+        val amount: Double,
         val calcResult: String
     ) : CalculationScreenState
 

@@ -29,13 +29,16 @@ class CalculationScreenViewModel @AssistedInject constructor(
     private fun load() {
         viewModelScope.launch {
             try {
-                val conversationResult = getConversationResultUseCase(
+                val convertationResult = getConversationResultUseCase(
                     currencyFrom = fromCurrency,
                     currencyTo = toCurrency,
                     amount = amount
                 )
                 _calculationScreenState.value = CalculationScreenState.Content(
-                    calcResult = conversationResult
+                    currencyFrom = fromCurrency,
+                    currencyTo = toCurrency,
+                    amount = amount,
+                    calcResult = convertationResult
                 )
 
             } catch (e: Exception) {

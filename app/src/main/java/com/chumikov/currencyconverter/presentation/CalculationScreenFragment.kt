@@ -71,9 +71,9 @@ class CalculationScreenFragment : Fragment() {
                 if (state is CalculationScreenState.Content) {
                     resultTextView.text = String.format(
                         getString(R.string.convertation_result),
-                        args.fromCurrency,
-                        args.toCurrency,
-                        args.amount,
+                        state.currencyFrom,
+                        state.currencyTo,
+                        state.amount.toString(),
                         state.calcResult
                     )
                 }
