@@ -92,20 +92,11 @@ class MainScreenFragment : Fragment() {
                         spinnerCurrencyFrom.setText(symbolCode)
                         viewModel.setCurrencyFromSpinnerState(symbolCode)
                     }
-                    spinnerCurrencyFrom.setOnDismissListener {
-                        val currentValue = spinnerCurrencyFrom.text.toString()
-                        viewModel.setCurrencyFromSpinnerState(currentValue)
-                    }
-
                     spinnerCurrencyTo.setOnItemClickListener { parent, _, position, _ ->
                         val selectedItem = parent.getItemAtPosition(position) as Currency
                         val symbolCode = selectedItem.symbolCode
                         spinnerCurrencyTo.setText(symbolCode)
                         viewModel.setCurrencyToSpinnerState(symbolCode)
-                    }
-                    spinnerCurrencyTo.setOnDismissListener {
-                        val currentValue = spinnerCurrencyTo.text.toString()
-                        viewModel.setCurrencyToSpinnerState(currentValue)
                     }
                 }
             }
